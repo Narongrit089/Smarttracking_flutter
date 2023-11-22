@@ -10,7 +10,7 @@ class MenuPage1 extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Image outside the GridView
+            // Image outside the GridViewHaHa
             Container(
               height: 100.0, // Set the desired height
               width: 250.0, // Set the desired width
