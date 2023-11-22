@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smarttracking/flashScreen.dart';
+import 'package:smarttracking/menu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:js';
 
 void main() => runApp(MyApp());
 
@@ -47,48 +50,73 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: 250.0,
                 height: 250.0,
               ),
-              // Name TextField
+
+              // Name TextField with image icon
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  prefixIcon: Image.asset('images/profile.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 16.0),
 
-              // Surname TextField
+              // Surname TextField with image icon
               TextField(
                 controller: _surnameController,
-                decoration: InputDecoration(labelText: 'Surname'),
+                decoration: InputDecoration(
+                  labelText: 'Surname',
+                  prefixIcon: Image.asset('images/profile.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 16.0),
 
-              // IME Number TextField
+              // IME Number TextField with image icon
               TextField(
                 controller: _imeNumberController,
-                decoration: InputDecoration(labelText: 'IME Number'),
+                decoration: InputDecoration(
+                  labelText: 'IME Number',
+                  prefixIcon: Image.asset('images/telephone.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 16.0),
 
-              // Email TextField
+              // Email TextField with image icon
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Image.asset('images/email.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 16.0),
 
-              // Password TextField
+              // Password TextField with image icon
               TextField(
                 controller: _passwordController1,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password 1'),
+                decoration: InputDecoration(
+                  labelText: 'Password 1',
+                  prefixIcon: Image.asset('images/password.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 16.0),
 
-              // Confirm Password TextField
+              // Confirm Password TextField with image icon
               TextField(
                 controller: _passwordController2,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Confirm Password'),
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: Image.asset('images/password.png',
+                      height: 20.0, width: 20.0),
+                ),
               ),
               SizedBox(height: 32.0),
 
@@ -111,13 +139,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       password1.isNotEmpty &&
                       password2.isNotEmpty) {
                     // Perform registration action
-                    // You can navigate to another page or show a success message here
-                    // For simplicity, let's print the registration details to the console
-                    print(
-                        'Registration successful:\nName: $name\nSurname: $surname\nIME Number: $imeNumber\nEmail: $email\nPassword 1: $password1\nPassword 2: $password2');
-
-                    // Navigate back to the login page
-                    Navigator.pop(context);
+                    // You can navigate to the menu page or show a success message here
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MenuPage()),
+                    );
                   } else {
                     // Show an error message if any field is empty
                     print('All fields are required');
@@ -129,15 +155,30 @@ class _RegisterPageState extends State<RegisterPage> {
               // Cancel Button
               TextButton(
                 onPressed: () {
-                  // เพิ่มคำสั่งไปยังหน้าผู้ใช้
+                  // Navigate back to the login page
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
                 },
                 child: Text('Cancel'),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MenuPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Menu'),
+      ),
+      body: Center(
+        child: Text('Welcome to the Menu Page!'),
       ),
     );
   }
