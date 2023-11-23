@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'sos_page.dart';
+import 'phone_page.dart';
+import 'tracking.dart';
+import 'menu_health.dart';
+import 'userinfo.dart';
+import 'sett_page.dart';
+import 'flashScreen.dart'; // Import the login page
 
 class MenuPage1 extends StatelessWidget {
   @override
@@ -6,14 +13,23 @@ class MenuPage1 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to the login page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Image outside the GridViewHaHa
             Container(
-              height: 100.0, // Set the desired height
-              width: 250.0, // Set the desired width
+              height: 100.0,
+              width: 250.0,
               child: Image.asset(
                 'images/smartim.png',
                 fit: BoxFit.cover,
@@ -28,28 +44,40 @@ class MenuPage1 extends StatelessWidget {
               crossAxisSpacing: 16.0,
               children: [
                 buildMenuItem('SOS', 'images/sos.png', () {
-                  // Handle menu item click
-                  print('Menu 1 clicked');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SOSPage()),
+                  );
                 }),
                 buildMenuItem('Phone', 'images/pa.png', () {
-                  // Handle menu item click
-                  print('Menu 2 clicked');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PhonePage()),
+                  );
                 }),
-                buildMenuItem('Location', 'images/loca.png', () {
-                  // Handle menu item click
-                  print('Menu 3 clicked');
+                buildMenuItem('Map', 'images/loca.png', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LocaPage()),
+                  );
                 }),
                 buildMenuItem('Nurse', 'images/nurse.png', () {
-                  // Handle menu item click
-                  print('Menu 4 clicked');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MenuHPage()),
+                  );
                 }),
                 buildMenuItem('Setting', 'images/settings.png', () {
-                  // Handle menu item click
-                  print('Menu 5 clicked');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserIfPage()),
+                  );
                 }),
                 buildMenuItem('More', 'images/softwareS.png', () {
-                  // Handle menu item click
-                  print('Menu 6 clicked');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingPage()),
+                  );
                 }),
               ],
             ),
@@ -69,8 +97,8 @@ class MenuPage1 extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              height: 120.0, // ปรับความสูงตามต้องการ
-              width: 120.0, // ปรับความกว้างตามต้องการ
+              height: 120.0,
+              width: 120.0,
             ),
             SizedBox(height: 8.0),
             Text(title),

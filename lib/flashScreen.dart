@@ -50,8 +50,14 @@ class _LoginPageState extends State<LoginPage> {
               controller: _usernameController,
               decoration: InputDecoration(
                 labelText: 'Username',
-                prefixIcon: Image.asset('images/profile.png',
-                    height: 20.0, width: 20.0),
+                prefixIcon: Image.asset(
+                  'images/profile.png',
+                  height: 20.0,
+                  width: 20.0,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -62,8 +68,14 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
-                prefixIcon: Image.asset('images/password.png',
-                    height: 20.0, width: 20.0),
+                prefixIcon: Image.asset(
+                  'images/password.png',
+                  height: 20.0,
+                  width: 20.0,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
               ),
             ),
             SizedBox(height: 32.0),
@@ -74,14 +86,24 @@ class _LoginPageState extends State<LoginPage> {
                 String username = _usernameController.text;
                 String password = _passwordController.text;
 
-                if (username.isNotEmpty && password.isNotEmpty) {
+                if (username.isEmpty || password.isEmpty) {
+                  // Show error borders around empty fields
+                  if (username.isEmpty) {
+                    _usernameController.clear();
+                    _usernameController.text = ''; // Trigger the error border
+                  }
+                  if (password.isEmpty) {
+                    _passwordController.clear();
+                    _passwordController.text = ''; // Trigger the error border
+                  }
+
+                  print('Username and password are required');
+                } else {
                   // Navigate to the MenuPage
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => MenuPage1()),
                   );
-                } else {
-                  print('Username and password are required');
                 }
               },
               child: Text('Login'),

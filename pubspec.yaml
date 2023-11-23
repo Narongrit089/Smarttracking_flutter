@@ -66,6 +66,12 @@ flutter:
     - images/nurse.png
     - images/settings.png
     - images/pa.png
+    - images/map.png
+
+    - images/heart-attack.png
+    - images/sleeping.png
+    - images/temperature.png
+    - images/heart.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
