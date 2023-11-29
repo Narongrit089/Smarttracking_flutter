@@ -59,13 +59,35 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         // Handle unsuccessful login
         print('Login Error');
-        // แสดง Dialog หรือปรับเปลี่ยน UI ตามที่ต้องการ
+        showErrorDialog(context,
+            'Invalid username or password'); // แสดง error ด้วย showDialog
       }
     } catch (error) {
       // Handle connection error
       print('Connection Error: $error');
-      // แสดง Dialog หรือปรับเปลี่ยน UI ตามที่ต้องการ
+      showErrorDialog(
+          context, 'Connection error'); // แสดง error ด้วย showDialog
     }
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิดกล่องข้อความ
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
