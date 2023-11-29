@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smarttracking/register.dart';
 import 'package:smarttracking/menu.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -23,8 +24,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void submitLogin(BuildContext context) async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    // URL of the API you want to call (checklogin.php)
+    String apiUrl = 'http://localhost:8080/cit2023/checklogin.php';
+
+    // Create the body of the request to send data
+    Map<String, dynamic> requestBody = {
+      'email': email,
+      'password': password,
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        body: requestBody,
+      );
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        print('Login Successfully');
+
+        // Navigate to MenuPage1 on successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MenuPage1()),
+        );
+      } else {
+        // Handle unsuccessful login
+        print('Login Error');
+        // แสดง Dialog หรือปรับเปลี่ยน UI ตามที่ต้องการ
+      }
+    } catch (error) {
+      // Handle connection error
+      print('Connection Error: $error');
+      // แสดง Dialog หรือปรับเปลี่ยน UI ตามที่ต้องการ
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Username TextField with icon
             TextField(
-              controller: _usernameController,
+              controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Username',
                 prefixIcon: Image.asset(
@@ -64,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Password TextField with icon
             TextField(
-              controller: _passwordController,
+              controller: passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -83,27 +125,24 @@ class _LoginPageState extends State<LoginPage> {
             // Login Button
             ElevatedButton(
               onPressed: () {
-                String username = _usernameController.text;
-                String password = _passwordController.text;
+                String username = emailController.text;
+                String password = passwordController.text;
 
                 if (username.isEmpty || password.isEmpty) {
                   // Show error borders around empty fields
                   if (username.isEmpty) {
-                    _usernameController.clear();
-                    _usernameController.text = ''; // Trigger the error border
+                    emailController.clear();
+                    passwordController.text = ''; // Trigger the error border
                   }
                   if (password.isEmpty) {
-                    _passwordController.clear();
-                    _passwordController.text = ''; // Trigger the error border
+                    emailController.clear();
+                    passwordController.text = ''; // Trigger the error border
                   }
 
                   print('Username and password are required');
                 } else {
-                  // Navigate to the MenuPage
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MenuPage1()),
-                  );
+                  // Submit the login data
+                  submitLogin(context);
                 }
               },
               child: Text('Login'),
