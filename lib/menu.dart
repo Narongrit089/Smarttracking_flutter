@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'sos_page.dart';
 import 'phone_page.dart';
 import 'tracking.dart';
-import 'menu_health.dart';
+import 'regis_health.dart';
 import 'userinfo.dart';
 import 'sett_page.dart';
 import 'flashScreen.dart'; // Import the login page
+import 'package:smarttracking/health_menu.dart';
 
 class MenuPage1 extends StatelessWidget {
   @override

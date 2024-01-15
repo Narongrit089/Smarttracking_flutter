@@ -73,6 +73,15 @@ flutter:
     - images/temperature.png
     - images/heart.png
 
+    - images/heartbeat.png
+    - images/id-card.png
+    - images/pulse.png
+    - images/schedule.png
+    - images/core.png
+    - images/edit.png
+    - images/delete1.png
+    - images/ss.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

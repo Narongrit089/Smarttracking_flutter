@@ -25,12 +25,75 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _surnameController = TextEditingController();
   TextEditingController _imeNumberController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController1 = TextEditingController();
-  TextEditingController _passwordController2 = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+
+  Future<void> registerUser(BuildContext context) async {
+    String imeNumber = _imeNumberController.text;
+    String name = _nameController.text;
+
+    // Validate input fields
+    if (imeNumber.isEmpty || name.isEmpty) {
+      print('All fields are required');
+      return;
+    }
+
+    // URL of the API you want to call (replace with your actual API URL)
+    String apiUrl = 'http://localhost:8080//cit2023/setting.php';
+
+    // Create the body of the request to send data
+    Map<String, dynamic> requestBody = {
+      'imeNumber': imeNumber,
+      'name': name,
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        body: requestBody,
+      );
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        print('Registration Successful');
+
+        // Navigate to MenuPage on successful registration
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } else if (response.statusCode == 500) {
+        // Handle unsuccessful registration
+        print('Registration Error');
+        showErrorDialog(context, 'เบอร์โทรศัพท์นี้มีบัญชีอยู่แล้ว');
+      }
+    } catch (error) {
+      // Handle connection error
+      print('Connection Error: $error');
+      showErrorDialog(context, 'Connection error');
+    }
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog box
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 250.0,
               ),
 
-              // Name TextField with image icon
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  prefixIcon: Image.asset('images/profile.png',
-                      height: 20.0, width: 20.0),
-                ),
-              ),
-              SizedBox(height: 16.0),
-
-              // Surname TextField with image icon
-              TextField(
-                controller: _surnameController,
-                decoration: InputDecoration(
-                  labelText: 'Surname',
-                  prefixIcon: Image.asset('images/profile.png',
-                      height: 20.0, width: 20.0),
-                ),
-              ),
-              SizedBox(height: 16.0),
-
               // IME Number TextField with image icon
               TextField(
                 controller: _imeNumberController,
@@ -84,69 +125,37 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 16.0),
 
-              // Email TextField with image icon
+              // Name TextField with image icon
               TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
+                controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Image.asset('images/email.png',
+                  labelText: 'Device Name',
+                  prefixIcon: Image.asset('images/profile.png',
                       height: 20.0, width: 20.0),
                 ),
               ),
               SizedBox(height: 16.0),
-
-              // Password TextField with image icon
-              TextField(
-                controller: _passwordController1,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password 1',
-                  prefixIcon: Image.asset('images/password.png',
-                      height: 20.0, width: 20.0),
-                ),
-              ),
-              SizedBox(height: 16.0),
-
-              // Confirm Password TextField with image icon
-              TextField(
-                controller: _passwordController2,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  prefixIcon: Image.asset('images/password.png',
-                      height: 20.0, width: 20.0),
-                ),
-              ),
-              SizedBox(height: 32.0),
 
               // Register Button
               ElevatedButton(
                 onPressed: () {
-                  // Add your registration logic here
-                  String name = _nameController.text;
-                  String surname = _surnameController.text;
                   String imeNumber = _imeNumberController.text;
-                  String email = _emailController.text;
-                  String password1 = _passwordController1.text;
-                  String password2 = _passwordController2.text;
+                  String name = _nameController.text;
 
-                  // Validate input fields and perform registration
-                  if (name.isNotEmpty &&
-                      surname.isNotEmpty &&
-                      imeNumber.isNotEmpty &&
-                      email.isNotEmpty &&
-                      password1.isNotEmpty &&
-                      password2.isNotEmpty) {
-                    // Perform registration action
-                    // You can navigate to the menu page or show a success message here
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => MenuPage()),
-                    );
+                  if (imeNumber.isEmpty || name.isEmpty) {
+                    // Show error borders around empty fields
+                    if (imeNumber.isEmpty) {
+                      _imeNumberController.clear();
+                    }
+                    if (name.isEmpty) {
+                      _nameController.clear();
+                    }
+
+                    print('Registration Error');
+                    showErrorDialog(context, 'กรุณากรอกข้อมูลให้ครบ');
                   } else {
-                    // Show an error message if any field is empty
-                    print('All fields are required');
+                    // Submit the registration data
+                    registerUser(context);
                   }
                 },
                 child: Text('Register'),
